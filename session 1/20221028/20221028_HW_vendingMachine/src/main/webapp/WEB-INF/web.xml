@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  	<display-name>20221028_HW_vendingMachine</display-name>
+  	<welcome-file-list>
+    	<welcome-file>index.html</welcome-file>
+  	</welcome-file-list>
+
+	<!-- SERVLET -->
+	<!-- controller.servlet -->
+	<servlet>
+  		<servlet-name>NavServlet</servlet-name>
+  		<servlet-class>controller.servlet.NavServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>LoginServlet</servlet-name>
+  		<servlet-class>controller.servlet.LoginServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>LogoutServlet</servlet-name>
+  		<servlet-class>controller.servlet.LogoutServlet</servlet-class>
+  	</servlet>
+  	<!-- controller.servlet.backend -->
+	<servlet>
+  		<servlet-name>SearchOrderServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.SearchOrderServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>GoBackendGoodsListServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.GoBackendGoodsListServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>GoBackendModifyServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.GoBackendModifyServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>GoBackendOrderServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.GoBackendOrderServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>SearchDrinkServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.SearchDrinkServlet</servlet-class>
+  	</servlet>
+  	<!-- controller.servlet.backend.ajax -->
+  	<servlet>
+  		<servlet-name>ModifyServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.ajax.ModifyServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>CreateServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.ajax.CreateServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>ModifyChangeGoodsServlet</servlet-name>
+  		<servlet-class>controller.servlet.backend.ajax.ModifyChangeGoodsServlet</servlet-class>
+  	</servlet>
+  	<!-- controller.servlet.frontend -->
+  	<servlet>
+  		<servlet-name>SearchDrinksServlet</servlet-name>
+  		<servlet-class>controller.servlet.frontend.SearchDrinksServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>CheckoutServlet</servlet-name>
+  		<servlet-class>controller.servlet.frontend.CheckoutServlet</servlet-class>
+  	</servlet>
+  	<servlet>
+  		<servlet-name>GoFrontendMachineServlet</servlet-name>
+  		<servlet-class>controller.servlet.frontend.GoFrontendMachineServlet</servlet-class>
+  	</servlet>
+  	<!-- controller.servlet.frontend.ajax -->
+  	<servlet>
+  		<servlet-name>ShoppingCartServlet</servlet-name>
+  		<servlet-class>controller.servlet.frontend.ajax.ShoppingCartServlet</servlet-class>
+  	</servlet>
+  	<!-- controller.servlet.error -->
+  	<servlet>
+  		<servlet-name>LoginErrorServlet</servlet-name>
+  		<servlet-class>controller.servlet.error.LoginErrorServlet</servlet-class>
+  	</servlet>
+  	
+  	
+	<!-- SERVLET MAPPING -->
+	<!-- controller.servlet -->
+	<servlet-mapping>
+  		<servlet-name>NavServlet</servlet-name>
+  		<url-pattern>/nav</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>LoginServlet</servlet-name>
+  		<url-pattern>/login</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>LogoutServlet</servlet-name>
+  		<url-pattern>/logout</url-pattern>
+  	</servlet-mapping>
+  	<!-- controller.servlet.backend -->
+  	<servlet-mapping>
+  		<servlet-name>SearchOrderServlet</servlet-name>
+  		<url-pattern>/backend/searchOrder</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>GoBackendGoodsListServlet</servlet-name>
+  		<url-pattern>/backend/goodsList</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>GoBackendModifyServlet</servlet-name>
+  		<url-pattern>/backend/go_modify</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>GoBackendOrderServlet</servlet-name>
+  		<url-pattern>/backend/go_order</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>SearchDrinkServlet</servlet-name>
+  		<url-pattern>/backend/searchDrink</url-pattern>
+  	</servlet-mapping>
+	<!-- controller.servlet.backend.ajax -->
+  	<servlet-mapping>
+  		<servlet-name>ModifyServlet</servlet-name>
+  		<url-pattern>/backend/ajax/modify</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>CreateServlet</servlet-name>
+  		<url-pattern>/backend/ajax/create</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>ModifyChangeGoodsServlet</servlet-name>
+  		<url-pattern>/backend/ajax/modify_change</url-pattern>
+  	</servlet-mapping>
+  	<!-- controller.servlet.frontend -->
+  	<servlet-mapping>
+  		<servlet-name>SearchDrinksServlet</servlet-name>
+  		<url-pattern>/frontend/search_drink</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>CheckoutServlet</servlet-name>
+  		<url-pattern>/frontend/checkout</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+  		<servlet-name>GoFrontendMachineServlet</servlet-name>
+  		<url-pattern>/frontend/go_front</url-pattern>
+  	</servlet-mapping>
+  	<!-- controller.servlet.frontend.ajax -->
+  	<servlet-mapping>
+  		<servlet-name>ShoppingCartServlet</servlet-name>
+  		<url-pattern>/frontend/cart</url-pattern>
+  	</servlet-mapping>
+  	<!-- controller.servlet.error -->
+  	<servlet-mapping>
+  		<servlet-name>LoginErrorServlet</servlet-name>
+  		<url-pattern>/error/login</url-pattern>
+  	</servlet-mapping>
+  	
+
+
+  	<!-- FILTER -->
+  	<filter>
+  		<filter-name>LoginFilter</filter-name>
+  		<filter-class>filter.LoginFilter</filter-class>
+  	</filter>
+  	<filter>
+  		<filter-name>WebFilter</filter-name>
+  		<filter-class>filter.WebFilter</filter-class>
+  	</filter>
+  	<!-- FILTER MAPPING -->
+  	<filter-mapping>
+  		<filter-name>LoginFilter</filter-name>
+  		<url-pattern>/login</url-pattern>
+  	</filter-mapping>
+  	<filter-mapping>
+  		<filter-name>WebFilter</filter-name>
+  		<url-pattern>/frontend/*</url-pattern>
+  	</filter-mapping>
+  	<filter-mapping>
+  		<filter-name>WebFilter</filter-name>
+  		<url-pattern>/backend/*</url-pattern>
+  	</filter-mapping>
+</web-app>
