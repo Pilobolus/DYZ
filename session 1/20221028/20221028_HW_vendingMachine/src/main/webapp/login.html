@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<script src="js/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(startup);
+
+		function startup(){
+			$("#myform_btn").click(btn_clicked);
+		}
+
+
+		function btn_clicked(){
+			if(check_input()){
+				login();
+			}
+		}
+		function check_input(){
+			if($("#myform_account").val() == ''){
+				alert("請輸入帳號");
+				return false;
+			}else if($("#myform_pwd").val() == ''){
+				alert("請輸入密碼");
+				return false;
+			}
+			return true;
+		}
+		function login(){
+			$.ajax({
+				url : "login",
+				type : "POST",
+				data : $("#myform").serialize(),
+				contentType : "application/x-www-form-urlencoded",
+				dataType : "Json",
+				success : function(result){
+					if(result.mystatus == "error"){
+						alert(result.msg);
+					}else if(result.mystatus == "success"){
+						alert(result.msg);
+						location.replace("nav?destination=frontend");
+					}
+				},
+				error : function(htx, ajaxOptions, thrownError){
+					console.log(htx);
+					console.log(ajaxOptions)
+					console.log(thrownError);
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<p style="font-size: 80px">&nbsp;</p>
+	<div align="center" >
+		<br/>
+		<form id="myform">
+			<label for="account">帳號 : </label>
+			<input type="text" name="account" placeholder="請輸入帳號" id="myform_account" />
+			<br/><br/>
+			
+			<label for="pwd">密碼 : </label>
+			<input type="password" name="pwd" placeholder="請輸入密碼" id="myform_pwd" />
+			<br/><br/>
+			
+			<button type="button" id="myform_btn">登入</button>
+		</form>
+	</div>
+</body>
+</html>

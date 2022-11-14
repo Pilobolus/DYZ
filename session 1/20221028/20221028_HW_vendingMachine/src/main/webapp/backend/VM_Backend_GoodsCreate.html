@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Language" content="zh-tw">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>販賣機-後臺</title>
+	<script src="../js/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(startUp);
+
+		function startUp(){
+			$("#sendButton").click(btnClicked);
+		}
+
+		function btnClicked(){
+			if(checkInput()){
+				createDrink();
+			}
+		}
+		function checkInput(){
+			let myBoolean = true;
+			if($("#goodsName").val() == ''){
+				alert("請輸入產品名稱");
+				myBoolean = false;
+			}
+			if($("#goodsPrice").val() == ''){
+				alert("請輸入產品價格");
+				myBoolean = false;
+			}else if($("#goodsPrice").val() <= 0){
+				alert("產品價格不能小於等於0");
+				myBoolean = false;
+			}
+			if($("#goodsQuantity").val() == ''){
+				alert("請輸入產品數量");
+				myBoolean = false;
+			}else if($("#goodsQuantity").val() < 0){
+				alert("產品數量不能小於0");
+				myBoolean = false;
+			}
+			if($("#goodsImage").val() == ''){
+				alert("請選擇產品照片");
+				myBoolean = false;
+			}
+			if($("#status_1").prop("checked")==false && $("#status_0").prop("checked")==false){
+				alert("請選產品狀態");
+				myBoolean = false;
+			}
+			
+			return myBoolean;
+		}
+		function createDrink(){
+			let form = document.getElementById("myForm");
+			$.ajax({
+				url : "ajax/create",
+				type : "POST",
+				data : new FormData(form),
+				contentType : false,
+				processData: false,
+				dataType : "Json",
+				success : function(result){
+					$("#msg").text("成功新增產品編號 " + result.id + " !");
+				},
+				error : function(){
+					$("#msg").text("新增產品失敗!");
+				}
+			});
+		}
+
+	</script>
+</head>
+<body>
+	<h1>Vending Machine Backend Service</h1><br/>		
+	<table border="1" style="border-collapse:collapse;margin-left:25px;">
+		<tr>
+			<td width="200" height="50" align="center">
+				<a href="../nav?destination=goods_list">商品列表</a>
+			</td>
+			<td width="200" height="50" align="center">
+				<a href="../nav?destination=modify">商品維護作業</a>
+			</td>
+			<td width="200" height="50" align="center">
+				<a href="../nav?destination=create">商品新增上架</a>
+			</td>
+			<td width="200" height="50" align="center">
+				<a href="../nav?destination=order">銷售報表</a>
+			</td>
+			<td width="200" height="50" align="center">
+				<a href="../nav?destination=frontend">前台販賣機</a>
+			</td>
+		</tr>
+	</table>
+	<br/><br/><HR>
+	
+	
+	
+	<h2>商品新增上架</h2><br/>
+	<div style="margin-left:25px;">
+		<div id="msg" style="color:blue;"></div>
+		<form id="myForm">
+			<p>
+				飲料名稱：<input type="text" name="goodsName" size="10" id="goodsName" />
+			</p>
+			<p>
+				設定價格：<input type="number" name="goodsPrice" size="5" min="0" max="1000" id="goodsPrice" />
+			</p>
+			<p>
+				初始數量：<input type="number" name="goodsQuantity" size="5" min="0" max="1000" id="goodsQuantity" />
+			</p>
+			<p>
+				商品圖片：<input type="file" name="goodsImage" accept="image/*" id="goodsImage" />
+			</p>
+			<p>
+				商品狀態：<input type="radio" name="status" value="1" id="status_1" />上架
+				<input type="radio" name="status" value="0" id="status_0" />下架
+			</p>
+			<p>
+				<input type="button" value="送出" id="sendButton">
+			</p>
+		</form>
+	</div>
+</body>
+</html>
