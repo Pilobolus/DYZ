@@ -17,6 +17,7 @@ public class ShoppingCartServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String json = RequestInputStreamReader.readInputStream(req);
 		Map<Integer, Integer> map = JsonTool.dealingShoppingCartJson(json);
+		
 		ShoppingCart cart = (ShoppingCart)req.getSession().getAttribute("shoppingCart_session");
 		
 		for(int id : map.keySet()) {

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import bean.Drink;
 import bean.dao.DrinkDAO;
+import bean.page.FrontendDrinkPage;
+import bean.page.FrontendDrinkPages;
 import bean.service.DrinkService;
 
 public class SearchDrinksServlet extends HttpServlet{
@@ -20,9 +22,9 @@ public class SearchDrinksServlet extends HttpServlet{
 		List<Drink>	drinkList = DrinkDAO.INSTANCE.searchOnSale(keyword);
 
 
-		req.getSession().setAttribute("drinkGroups_session", DrinkService.groupingDrinks(drinkList, 3));
+		req.setAttribute("drinkPages", DrinkService.generateFrontendDrinkPages(drinkList, 6, true));
 		
 		
-		req.getRequestDispatcher("go_front?pageId=1").forward(req, resp);
+		req.getRequestDispatcher("vending_machine").forward(req, resp);
 	}
 }

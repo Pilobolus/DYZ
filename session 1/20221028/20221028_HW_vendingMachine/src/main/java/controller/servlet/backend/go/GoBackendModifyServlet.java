@@ -1,4 +1,4 @@
-package controller.servlet.backend;
+package controller.servlet.backend.go;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +30,6 @@ public class GoBackendModifyServlet extends HttpServlet{
 		req.setAttribute("drink1Price", drink1Price);
 		req.setAttribute("drink1Quantity", drink1Quantity);
 		
-		req.getRequestDispatcher("VM_Backend_GoodsReplenishment.jsp").forward(req, resp);
+		req.getRequestDispatcher("../WEB-INF/backend/VM_Backend_GoodsReplenishment.jsp").forward(req, resp);
 	}
 }

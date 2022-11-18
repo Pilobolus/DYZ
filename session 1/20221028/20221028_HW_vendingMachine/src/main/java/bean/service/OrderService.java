@@ -1,35 +1,37 @@
 package bean.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import bean.Order;
 import bean.dao.OrderDAO;
+import bean.page.OrderPage;
+import bean.page.OrderPages;
 
 public class OrderService {
 
-	public static Map<Integer, List<Order>> groupingOrder(List<Order> allOrders, int memberNum){
-		Map<Integer, List<Order>> groups = new HashMap<>();
+	public static OrderPages generateOrderPages(List<Order> orders, int memberNum, boolean isSearchPage){
 		
-		int size = allOrders.size();
+		List<OrderPage> orderPageList = new ArrayList<>();
+		
+		int size = orders.size();
 		int index = 0;
-		int groupNum = 0;
+		int pageId = 1;
 		while(index < size) {
-			List<Order> group = new ArrayList<>();
+			List<Order> orderList = new ArrayList<>();
 			
 			for(int i=0; i<memberNum && index<size; i++, index++) {
-				group.add(allOrders.get(index));
+				orderList.add(orders.get(index));
 			}
 			
-			groups.put(groupNum++, group);
+			orderPageList.add(new OrderPage(orderList, pageId));
+			pageId++;
 		}
-		return groups;
+		return new OrderPages(orderPageList, isSearchPage);
 	}
 	
-	public static Map<Integer, List<Order>> groupingOrder(int memberNum){
-		return groupingOrder(OrderDAO.INSTANCE.getOrders(), memberNum);
+	public static OrderPages generateOrderPages(int memberNum, boolean isSearchPage){
+		return generateOrderPages(OrderDAO.INSTANCE.getOrders(), memberNum, isSearchPage);
 	}
 	
 	

@@ -1,12 +1,19 @@
 package bean.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import bean.Drink;
 import bean.dao.DrinkDAO;
+import bean.page.BackendDrinkPage;
+import bean.page.BackendDrinkPages;
+import bean.page.DrinkPage;
+import bean.page.DrinkPages;
+import bean.page.FrontendDrinkPage;
+import bean.page.FrontendDrinkPages;
 import tool.JsonTool;
 
 public class DrinkService {
@@ -33,28 +40,7 @@ public class DrinkService {
 		return json;
 	}
 	
-	public static Map<Integer, List<Drink>> groupingDrinks(List<Drink> drinks, int memberNum){
-		Map<Integer, List<Drink>> groups = new HashMap<>();
-		
-		int drinkNum = drinks.size();
-		int index = 0;
-		int groupIndex = 0;
-		
-		while(index < drinkNum) {
-			List<Drink> group = new ArrayList<>();
-			
-			for(int i=0; i<memberNum && index<drinkNum; i++, index++) {
-				group.add(drinks.get(index));
-			}
-			groups.put(groupIndex, group);
-			groupIndex++;
-		}
-		
-		return groups;
-	}
-	public static Map<Integer, List<Drink>> groupingDrinks(int memberNum){
-		return groupingDrinks(DrinkDAO.INSTANCE.getDrinks(), memberNum);
-	}
+	
 
 	public static String toIdsJson(List<Drink> drinkList) {
 		List<Object> drinkIdList = new ArrayList<>();
@@ -79,4 +65,44 @@ public class DrinkService {
 		
 		return JsonTool.jsonMerge(drinkIdJsonStr);
 	}
+	
+	
+	public static <T extends DrinkPage, S extends DrinkPages<T>> S generateDrinkPages(List<Drink> drinks, int memberNum, boolean isSearchPage, BiFunction<List<Drink>, Integer, T> drinkPageGenerator, BiFunction<List<T>, Boolean, S> drinkPagesGenerator){
+		List<T> drinkPageList = new ArrayList<>();
+		
+		int drinkNum = drinks.size();
+		int index = 0;
+		int pageId = 1;
+		
+		while(index < drinkNum) {
+			List<Drink> drinkList = new ArrayList<>();
+			
+			for(int i=0; i<memberNum && index<drinkNum; i++, index++) {
+				drinkList.add(drinks.get(index));
+			}
+			
+			drinkPageList.add(drinkPageGenerator.apply(drinkList, pageId));
+			pageId++;
+		}
+		
+		return drinkPagesGenerator.apply(drinkPageList, isSearchPage);
+	}
+	public static <T extends DrinkPage, S extends DrinkPages<T>> S generateDrinkPages(int memberNum, boolean isSearchPage, BiFunction<List<Drink>, Integer, T> drinkPageGenerator, BiFunction<List<T>, Boolean, S> drinkPagesGenerator){
+		return generateDrinkPages(DrinkDAO.INSTANCE.getDrinks(), memberNum, isSearchPage, drinkPageGenerator, drinkPagesGenerator);
+	}
+	
+	
+	public static BackendDrinkPages generateBackendDrinkPages(List<Drink> drinks, int memberNum, boolean isSearchPage) {
+		return generateDrinkPages(drinks, memberNum, isSearchPage, BackendDrinkPage::new, BackendDrinkPages::new);
+	}
+	public static BackendDrinkPages generateBackendDrinkPages(int memberNum, boolean isSearchPage) {
+		return generateDrinkPages(memberNum, isSearchPage, BackendDrinkPage::new, BackendDrinkPages::new);
+	}
+	public static FrontendDrinkPages generateFrontendDrinkPages(List<Drink> drinks, int memberNum, boolean isSearchPage) {
+		return generateDrinkPages(drinks, memberNum, isSearchPage, FrontendDrinkPage::new, FrontendDrinkPages::new);
+	}
+	public static FrontendDrinkPages generateFrontendDrinkPages(int memberNum, boolean isSearchPage) {
+		return generateDrinkPages(memberNum, isSearchPage, FrontendDrinkPage::new, FrontendDrinkPages::new);
+	}
+
 }

@@ -17,7 +17,7 @@ public class CheckoutService {
 	public static Map<String, Object> checkout(int payMoney, ShoppingCart cart, Customer customer) {
 		
 		List<Drink> allDrinks = DrinkDAO.INSTANCE.getDrinks();
-		changeDrinkQuantity(cart, allDrinks);
+		
 		
 		int total = 0;
 		for(Drink drink : allDrinks) {
@@ -36,6 +36,11 @@ public class CheckoutService {
 			return msg;
 		}
 		
+		
+		total = changeDrinkQuantity(cart, allDrinks);
+		payback = payMoney - total;
+		
+		
 		addOrders(cart, customer, allDrinks);
 		
 		msg.put("msg_2", "找零金額：" + payback);
@@ -53,7 +58,9 @@ public class CheckoutService {
 		return msg;
 	}
 	
-	private static void changeDrinkQuantity(ShoppingCart cart, List<Drink> allDrinks) {
+	private static int changeDrinkQuantity(ShoppingCart cart, List<Drink> allDrinks) {
+		int total = 0;
+		
 		for(Drink drink : allDrinks) {
 			if(cart.getDrinkNumber(drink) > 0) {
 				int q = drink.getQuantity() - cart.getDrinkNumber(drink);
@@ -62,9 +69,12 @@ public class CheckoutService {
 					cart.setDrinkNumber(drink.getId(), drink.getQuantity());
 					q = 0;
 				}
+				
+				total += (drink.getQuantity()-q) * drink.getPrice();
 				drink.setQuantity(q);
 			}
 		}
+		return total;
 	}
 	
 	private static void addOrders(ShoppingCart cart, Customer customer, List<Drink> allDrinks) {

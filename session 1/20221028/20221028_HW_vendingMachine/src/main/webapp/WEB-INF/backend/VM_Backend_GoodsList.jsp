@@ -16,6 +16,7 @@
 
 		function startup(){
 			$("#searchBtn").click(searchBtnClicked);
+			linkHref();
 		}
 
 		function searchBtnClicked(){
@@ -24,6 +25,23 @@
 				return false;
 			}
 			return true;
+		}
+		function linkHref(){
+			if(${isSearchPage==false}){
+				return;
+			}
+
+			if(${drinkPage.pageId>1 }){
+				$("#navPage_last").attr("href", "searchDrink?nameKey=${param.nameKey}&pageId=${drinkPage.pageId-1}");
+			}
+
+			for(var i=${drinkPage.basePageId+1 }; i<=${((drinkPage.basePageId+3)<maxPageId) ? (drinkPage.basePageId+3) : maxPageId }; i++){
+				$("#navPage_" + i).attr("href", "searchDrink?nameKey=${param.nameKey}&pageId=" + i);
+			}
+
+			if(${drinkPage.pageId<maxPageId }){
+				$("#navPage_next").attr("href", "searchDrink?nameKey=${param.nameKey}&pageId=${drinkPage.pageId+1}");
+			}
 		}
 	</script>
 </head>
@@ -59,6 +77,7 @@
 				<td colspan="2">
 					<form action="searchDrink">
 						名稱搜尋&nbsp;<input type="text" size="10" name="nameKey" id="nameKey" />
+						<input type="hidden" name="pageId" value="1" />
 						<button type="submit" style="margin-left:25px; width:50px;height:32px" id="searchBtn">搜尋</button>
 					</form>
 					<br/>
@@ -79,7 +98,7 @@
 						<tbody align="center">
 
 				
-							<c:forEach var="drink" items="${drinkList }">
+							<c:forEach var="drink" items="${drinkPage.objectList }">
 								<tr height="30">
 									<td>${drink.id }</td>
 									<td>${drink.name }</td> 
@@ -102,18 +121,18 @@
 			<tr>
 				<td>
 					<br/>
-					<c:if test="${pageId>1 }">
-						<a href="goodsList?pageId=${pageId-1 }">上一頁</a>
+					<c:if test="${drinkPage.pageId>1 }">
+						<a href="goodsList?pageId=${drinkPage.pageId-1 }" id="navPage_last">上一頁</a>
 					</c:if>
 		
 		
-					<c:forEach var="i" begin="${basePage+1 }" end="${((basePage+3)<groupSize) ? (basePage+3) : groupSize }">
-						<a href="goodsList?pageId=${i }">${i }</a>
+					<c:forEach var="i" begin="${drinkPage.basePageId+1 }" end="${((drinkPage.basePageId+3)<maxPageId) ? (drinkPage.basePageId+3) : maxPageId }">
+						<a href="goodsList?pageId=${i }" id="navPage_${i }">${i }</a>
 					</c:forEach>
 		
 
-					<c:if test="${pageId<groupSize }">
-						<a href="goodsList?pageId=${pageId+1 }">下一頁</a>
+					<c:if test="${drinkPage.pageId<maxPageId }">
+						<a href="goodsList?pageId=${drinkPage.pageId+1 }" id="navPage_next">下一頁</a>
 					</c:if>
 				
 				</td>

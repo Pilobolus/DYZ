@@ -15,19 +15,18 @@ public class NavServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String destination = req.getParameter("destination");
 		
+
 		if(destination.equals("goods_list")) {
-			req.getSession().removeAttribute("drinkGroupsBackend_session");
 			resp.sendRedirect("backend/goodsList?pageId=1");
-		}
-		else if(destination.equals("create"))
-			resp.sendRedirect("backend/VM_Backend_GoodsCreate.html");
+		}else if(destination.equals("create"))
+			resp.sendRedirect("backend/create");
 		else if(destination.equals("modify"))
-			resp.sendRedirect("backend/go_modify");
+			resp.sendRedirect("backend/modify");
 		else if(destination.equals("order"))
-			resp.sendRedirect("backend/go_order?pageId=1");
+			resp.sendRedirect("backend/ordersList?pageId=1");
 		else if(destination.equals("frontend")) {
 			req.getSession().setAttribute("shoppingCart_session", new ShoppingCart());
-			resp.sendRedirect("frontend/go_front?pageId=1&resetDrinks=true");
+			resp.sendRedirect("frontend/vending_machine?pageId=1");
 		}
 	}
 }

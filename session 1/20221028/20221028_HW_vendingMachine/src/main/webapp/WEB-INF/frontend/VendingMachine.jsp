@@ -21,15 +21,27 @@
 
 		function startup(){
 			
-			if(${pageId > 1 }){
-				$("#lastPage").click(change_cart);
+			if(${drinkPage.pageId > 1 }){
+				let navPageLast = $("#navPage_last");
+				navPageLast.click(change_cart);
+				if(${isSearchPage}){
+					navPageLast.attr("href", "search_drink?searchKeyword=${param.searchKeyword}&pageId=${drinkPage.pageId-1}");
+				}
 			}
-			for(var i=0; i<3 && ${basePageId }+i<${maxPage }; i++){
-				$("#page_" + (${basePageId+1 }+i)).click(change_cart);
+			for(var i=1; i<=3 && (${drinkPage.basePageId }+i)<=${maxPageId }; i++){
+				let navPageI = $("#navPage_" + (${drinkPage.basePageId }+i));
+				navPageI.click(change_cart);
+				if(${isSearchPage}){
+					navPageI.attr("href", "search_drink?searchKeyword=${param.searchKeyword}&pageId=" + (${drinkPage.basePageId }+i));
+				}
 			}
 
-			if(${pageId < maxPage }){
-				$("#nextPage").click(change_cart);
+			if(${drinkPage.pageId < maxPageId }){
+				let navPageNext = $("#navPage_next");
+				navPageNext.click(change_cart);
+				if(${isSearchPage}){
+					navPageNext.attr("href", "search_drink?searchKeyword=${param.searchKeyword}&pageId=${drinkPage.pageId+1}");
+				}
 			}
 
 			if(${checkoutMsgNum>0 }){
@@ -48,10 +60,10 @@
 			let myBoolean = true;
 			let quantities = {};
 
-			if(${pageDrinkCount>0 }){
+			if(${drinkPage.pageDrinkCount>0 }){
 				
-				let drink1Ids = JSON.parse('${drink1IdListJson }').ids;
-				let drink1Names = JSON.parse('${drink1NameListJson}').names;
+				let drink1Ids = JSON.parse('${drinkPage.drink1IdListJson }').ids;
+				let drink1Names = JSON.parse('${drinkPage.drink1NameListJson}').names;
 
 				drink1Ids.forEach(function(value, index){
 					let drinkId = parseInt(value);
@@ -69,9 +81,9 @@
 				});
 				
 				
-				if(${pageDrinkCount>3 }){
-					let drink2Ids = JSON.parse('${drink2IdListJson }').ids;
-					let drink2Names = JSON.parse('${drink2NameListJson}').names;
+				if(${drinkPage.pageDrinkCount>3 }){
+					let drink2Ids = JSON.parse('${drinkPage.drink2IdListJson }').ids;
+					let drink2Names = JSON.parse('${drinkPage.drink2NameListJson}').names;
 
 					drink2Ids.forEach(function(value, index){
 						let drinkId = parseInt(value);
@@ -137,7 +149,7 @@
 		function allDrinksClicked(){
 			
 			change_cart();
-			location.replace("go_front?pageId=1&resetDrinks=true");
+			location.replace("vending_machine?pageId=1");
 		}
 
 		function searchBtnClicked(){
@@ -169,6 +181,7 @@
 		<tr>
 			<td colspan="2" align="right">
 				<form action="search_drink" method="get">
+					<input type="hidden" name="pageId" value="1" />
 					<input type="text" name="searchKeyword" id="searchKeyword" />
 					<input type="submit" value="商品查詢" id="searchBtn" />
 				</form>
@@ -198,7 +211,7 @@
 			<td width="600">
 				<table border="1" style="border-collapse: collapse" width="100%" height="100%">
 					<tr>
-						<c:forEach var="drink" items="${drink1List }">
+						<c:forEach var="drink" items="${drinkPage.drink1List }">
 							<td>							
 								<font face="微軟正黑體" size="3" >${drink.name }</font>
 								<br/>
@@ -215,7 +228,7 @@
 						</c:forEach>
 					</tr>
 					<tr>
-						<c:forEach var="drink" items="${drink2List }">
+						<c:forEach var="drink" items="${drinkPage.drink2List }">
 							<td>
 								<font face="微軟正黑體" size="3" >${drink.name }</font>
 								<br/>
@@ -244,16 +257,16 @@
 							<button id="allDrinksBtn" type="button">All Drinks</button>
 						</td>
 						<td align="right" width="300" >
-							<c:if test="${pageId>1 }">
-								<h3 class="page"> <a href="go_front?pageId=${pageId-1 }" id="lastPage"> 上一頁 </a> </h3>
+							<c:if test="${drinkPage.pageId>1 }">
+								<h3 class="page"> <a href="vending_machine?pageId=${drinkPage.pageId-1 }" id="navPage_last"> 上一頁 </a> </h3>
 							</c:if>
 				
-							<c:forEach var="i" begin="${basePageId+1 }" end="${((basePageId+3)<maxPage) ? (basePageId+3) : maxPage }">
-								<h3 class="page"> <a href="go_front?pageId=${i }" id="page_${i }"> ${i } </a> </h3>
+							<c:forEach var="i" begin="${drinkPage.basePageId+1 }" end="${((drinkPage.basePageId+3)<maxPageId) ? (drinkPage.basePageId+3) : maxPageId }">
+								<h3 class="page"> <a href="vending_machine?pageId=${i }" id="navPage_${i }"> ${i } </a> </h3>
 							</c:forEach>
 						
-							<c:if test="${pageId<maxPage }">
-								<h3 class="page"> <a href="go_front?pageId=${pageId+1 }" id="nextPage"> 下一頁 </a> </h3>
+							<c:if test="${drinkPage.pageId<maxPageId }">
+								<h3 class="page"> <a href="vending_machine?pageId=${drinkPage.pageId+1 }" id="navPage_next"> 下一頁 </a> </h3>
 							</c:if>
 						</td>
 					</tr>

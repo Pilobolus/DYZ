@@ -48,7 +48,7 @@ public class DrinkDAO {
 		List<Drink> list = new ArrayList<>();
 
 		
-		String query = "SELECT * FROM BEVERAGE_GOODS WHERE STATUS = \'1\' AND QUANTITY>0";
+		String query = "SELECT * FROM BEVERAGE_GOODS WHERE STATUS = \'1\'";
 		try(Connection connection = DBTool.INSTANCE.getConnection();
 				Statement st = connection.createStatement();
 				ResultSet rs = st.executeQuery(query);) {
@@ -183,11 +183,37 @@ public class DrinkDAO {
 		return false;
 	}
 	
+	public List<Drink> search(String keyword){
+		List<Drink> list = new ArrayList<>();
+
+		String query = "SELECT * FROM BEVERAGE_GOODS WHERE GOODS_NAME LIKE \'%%%s%%\'";
+		
+		try(Connection connection = DBTool.INSTANCE.getConnection();
+				Statement st = connection.createStatement();
+				ResultSet rs = st.executeQuery(String.format(query, keyword));) {
+			
+			while(rs.next()) {
+				Drink d = new Drink();
+				d.setId(rs.getInt(1));
+				d.setName(rs.getString(2));
+				d.setDescription(rs.getString(3));
+				d.setPrice(rs.getInt(4));
+				d.setQuantity(rs.getInt(5));
+				d.setImage(rs.getString(6));
+				d.setStatus(rs.getString(7));
+				list.add(d);
+			}
+		}catch(SQLException ex) {
+			System.out.println(ex);
+		}
+		
+		return list;
+	}
 	
 	public List<Drink> searchOnSale(String keyword){
 		List<Drink> list = new ArrayList<>();
 
-		String query = "SELECT * FROM BEVERAGE_GOODS WHERE GOODS_NAME LIKE \'%%%s%%\'";
+		String query = "SELECT * FROM BEVERAGE_GOODS WHERE GOODS_NAME LIKE \'%%%s%%\' AND STATUS = \'1\'";
 		
 		try(Connection connection = DBTool.INSTANCE.getConnection();
 				Statement st = connection.createStatement();

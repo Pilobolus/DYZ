@@ -33,6 +33,6 @@ public class CheckoutServlet extends HttpServlet{
 		req.setAttribute("hasCheckout", true);
 		session.setAttribute("shoppingCart_session", new ShoppingCart());
 		
-		req.getRequestDispatcher("go_front?pageId=1").forward(req, resp);
+		req.getRequestDispatcher("vending_machine?pageId=1").forward(req, resp);
 	}
 }

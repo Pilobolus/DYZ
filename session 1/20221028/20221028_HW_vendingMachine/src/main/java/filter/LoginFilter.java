@@ -21,22 +21,18 @@ public class LoginFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest)request;
+		HttpServletResponse httpResp = (HttpServletResponse)response;
+		String url  = httpReq.getServletPath();
 		
-		
-		String account = httpReq.getParameter("account");
-		String password = httpReq.getParameter("pwd");
-		
-		Customer customer = CustomerDAO.INSTANCE.getCustomerById(account);
-		if(customer==null || customer.getPassword()==null) {
-			httpReq.setAttribute("msg", "無此帳號");
-			httpReq.getRequestDispatcher("error/login").forward(request, response);
-		}else if(!customer.getPassword().equals(password)) {
-			httpReq.setAttribute("msg", "密碼錯誤");
-			httpReq.getRequestDispatcher("error/login").forward(request, response);
+
+		if(url.startsWith("/frontend/") || url.startsWith("/backend/") || url.startsWith("/WEB-INF/") || url.equals("/nav")) {
+			if(httpReq.getSession().getAttribute("customer_session") != null)
+				chain.doFilter(request, response);
+			else
+				httpResp.sendRedirect(httpReq.getContextPath() + "/web_error.html");
 		}else {
-			httpReq.getSession().setAttribute("customer_session", customer);
 			chain.doFilter(request, response);
 		}
-		
+
 	}
 }
